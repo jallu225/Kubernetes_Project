@@ -26,8 +26,7 @@ node {
            withCredentials([string(credentialsId: 'docker_pass', variable: 'dockerhub_passwd')]) {
                 sh "docker login -u rajeshjallu -p ${dockerhub_passwd}"
                 sh 'ssh -o StrictHostKeyChecking=no -l ec2-user 35.154.191.16 docker push rajeshjallu/$JOB_NAME:v1.$BUILD_ID'
-                sh 'ssh -o StrictHostKeyChecking=no -l ec2-user 35.154.191.16 docker push rajeshjallu/$JOB_NAME:latest'
-                
+                sh 'ssh -o StrictHostKeyChecking=no -l ec2-user 35.154.191.16 docker push rajeshjallu/$JOB_NAME:latest' 
            }
         }
     }   
