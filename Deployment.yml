@@ -1,20 +1,20 @@
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-   name: mrdevops
+   name: rajdevops
 spec:
    replicas: 2
    selector:      # tells the controller which pods to watch/belong to
     matchLabels:
-     app: mrdevops
+     app: rajdevops
    template:
       metadata:
         labels:
-          app: mrdevops
+          app: rajdevops
       spec:
        containers:
-        - name: mrdevops
-          image: rajeshjallu/pipeline-ssh-docker
+        - name: rajdev
+          image: rajeshjallu/pipeline-cicd
           imagePullPolicy: Always
           ports:
           - containerPort: 80
