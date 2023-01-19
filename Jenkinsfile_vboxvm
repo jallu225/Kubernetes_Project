@@ -30,7 +30,7 @@ node {
         sshagent(['docker-server']) {
             sh 'ssh -o StrictHostKeyChecking=no -l vagrant 192.168.29.239 uname -a'
             sh 'scp -o StrictHostKeyChecking=no /var/jenkins_home/workspace/pipeline-cicd/* vagrant@192.168.29.239:/home/vagrant/'
-            sh 'ssh -o StrictHostKeyChecking=no -l vagrant 192.168.29.239 ansible k8s ansible.yml'
+            sh 'ssh -o StrictHostKeyChecking=no -l vagrant 192.168.29.239 ansible-playbook k8s ansible.yml'
            }
     }
 }
