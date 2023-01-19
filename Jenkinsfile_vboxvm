@@ -1,0 +1,36 @@
+node { 
+    
+    stage('Git Checkout'){
+        git 'https://github.com/rajesh1218/Kubernetes_Project.git'
+    }
+    stage('Send Dockerfile to Docker-host') {
+        sshagent(['docker-server']) {
+            sh 'ssh -o StrictHostKeyChecking=no -l vagrant 192.168.56.116 uname -a'
+            sh 'scp -o StrictHostKeyChecking=no /var/jenkins_home/workspace/pipeline-cicd/* vagrant@192.168.56.116:/home/vagrant/'
+           }
+    }
+    stage('Docker Build') {
+        sshagent(['docker-server']) {
+            
+             sh 'ssh -o StrictHostKeyChecking=no vagrant@192.168.56.116 docker build -t $JOB_NAME:v1.$BUILD_ID .'
+             sh 'ssh -o StrictHostKeyChecking=no vagrant@192.168.56.116 docker tag  $JOB_NAME:v1.$BUILD_ID rajeshjallu/$JOB_NAME:latest'
+           }
+    }
+    stage('Docker push to docker hub') {
+        sshagent(['docker-server']) {
+            withCredentials([string(credentialsId: 'dockerhub_pass', variable: 'dockerhub_pass')]) {
+             sh 'ssh -o StrictHostKeyChecking=no vagrant@192.168.56.116 docker login -u rajeshjallu -p ${dockerhub_pass}'
+             sh 'ssh -o StrictHostKeyChecking=no vagrant@192.168.56.116 docker push rajeshjallu/$JOB_NAME:latest'
+             
+             sh 'ssh -o StrictHostKeyChecking=no vagrant@192.168.56.116 docker rmi $JOB_NAME:v1.$BUILD_ID rajeshjallu/$JOB_NAME:latest'
+              }
+           }
+    }
+    stage('Send files to k8s-host') {
+        sshagent(['docker-server']) {
+            sh 'ssh -o StrictHostKeyChecking=no -l vagrant 192.168.29.239 uname -a'
+            sh 'scp -o StrictHostKeyChecking=no /var/jenkins_home/workspace/pipeline-cicd/* vagrant@192.168.29.239:/home/vagrant/'
+            sh 'ssh -o StrictHostKeyChecking=no -l vagrant 192.168.29.239 ansible k8s ansible.yml'
+           }
+    }
+}
