@@ -27,10 +27,15 @@ node {
            }
     }
     stage('Send files to k8s-host') {
-        sshagent(['docker-server']) {
+        sshagent(['k8s-server']) {
             sh 'ssh -o StrictHostKeyChecking=no -l vagrant 192.168.29.239 uname -a'
             sh 'scp -o StrictHostKeyChecking=no /var/jenkins_home/workspace/pipeline-cicd/* vagrant@192.168.29.239:/home/vagrant/'
-            sh 'ssh -o StrictHostKeyChecking=no -l vagrant 192.168.29.239 ansible-playbook k8s ansible.yml'
            }
+    }
+    stage('publish in k8s') {
+        sshagent(['ansible-server']) {
+            sh 'ssh -o StrictHostKeyChecking=no -l vagrant 192.168.56.115 uname -a'
+            sh 'ssh -o StrictHostKeyChecking=no -l vagrant 192.168.56.115 ansible-playbook ansible.yml'
+          }   
     }
 }
