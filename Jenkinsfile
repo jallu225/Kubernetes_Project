@@ -5,7 +5,7 @@ node {
     }
     stage('Send docker file to ansible-server'){
         sshagent(['docker-server']) {
-            sh 'ssh -o StrictHostKeyChecking=no -l ec2-user@15.206.174.243 uname -a'
+            sh 'ssh -o StrictHostKeyChecking=no -l ec2-user@15.206.174.243 sudo mkdir abc'
        }
     }
 }    
