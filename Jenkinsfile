@@ -8,4 +8,4 @@ node {
             sh 'ssh -o StrictHostKeyChecking=no -l ec2-user@15.206.174.243 uname -a'
        }
     }
-    
+}    
