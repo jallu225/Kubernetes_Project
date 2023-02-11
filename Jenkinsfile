@@ -6,7 +6,7 @@ node {
     stage('Send docker file to ansible-server'){
         sshagent(['docker-server']) {
             sh 'ssh -o StrictHostKeyChecking=no -l ec2-user 35.154.191.16 uname -a'
-            sh 'scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/pipeline-ssh-docker/* ec2-user@35.154.191.16:/home/ec2-user/'
+            sh 'scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/pipeline-ssh-docker/* ec2-user@35.154.191.16:/home/ec2-user'
         }
     }
     stage('Docker Build') {
