@@ -23,8 +23,7 @@ node {
     }
     stage('Docker Image push to docker hub') {
         sshagent(['ansible-server']) {
-                sh 'ssh -o StrictHostKeyChecking=no -l ec2-user 3.110.135.177 docker push rajeshjallu/$JOB_NAME:v1.$BUILD_ID'
-                sh 'ssh -o StrictHostKeyChecking=no -l ec2-user 3.110.135.177 docker push rajeshjallu/$JOB_NAME:latest'
+                sh 'ssh -o StrictHostKeyChecking=no -l ec2-user 3.110.135.177 docker push rajeshjallu/dockerwithk8s:latest'
                 sh 'ssh -o StrictHostKeyChecking=no -l ec2-user 3.110.135.177 docker rmi $JOB_NAME:v1.$BUILD_ID rajeshjallu/$JOB_NAME:v1.$BUILD_ID rajeshjallu/$JOB_NAME:latest'
         }
     }   
