@@ -20,12 +20,5 @@ node {
            sh 'ssh -o StrictHostKeyChecking=no -l ec2-user 3.110.135.177 docker tag $JOB_NAME:v1.$BUILD_ID rajeshjallu/$JOB_NAME:v1.$BUILD_ID'
            sh 'ssh -o StrictHostKeyChecking=no -l ec2-user 3.110.135.177 docker tag $JOB_NAME:v1.$BUILD_ID rajeshjallu/$JOB_NAME:latest'
         }
-    }
-    stage('Docker Image push to docker hub') {
-        sshagent(['ansible-server']) {
-                sh 'ssh -o StrictHostKeyChecking=no -l ec2-user 3.110.135.177 docker login -u rajesh1218 -p Anki@1218'
-                sh 'ssh -o StrictHostKeyChecking=no -l ec2-user 3.110.135.177 docker push rajeshjallu/dockerwithk8s:latest'
-                sh 'ssh -o StrictHostKeyChecking=no -l ec2-user 3.110.135.177 docker rmi $JOB_NAME:v1.$BUILD_ID rajeshjallu/$JOB_NAME:v1.$BUILD_ID rajeshjallu/$JOB_NAME:latest'
-        }
-    }   
+    } 
 }
