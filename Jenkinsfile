@@ -14,17 +14,11 @@ node {
            sh 'ssh -o StrictHostKeyChecking=no -l ec2-user 3.110.174.129 docker build -t $JOB_NAME:v1.$BUILD_ID .'
         }
     }
-    stage('Docker image tagging') {
+    stage('Docker image tagging And Push') {
         sshagent(['docker-server']) {
            sh 'ssh -o StrictHostKeyChecking=no -l ec2-user 3.110.174.129 docker tag $JOB_NAME:v1.$BUILD_ID rajeshjallu/$JOB_NAME:latest'
-        }
-    }
-    stage('Docker Image push to docker hub') {
-        sshagent(['docker-server']) {
-           withCredentials([string(credentialsId: 'docker_pass', variable: 'dockerhub_passwd')]) {
-                sh "docker login -u rajeshjallu -p ${dockerhub_passwd}"
-                sh 'ssh -o StrictHostKeyChecking=no -l ec2-user 3.110.174.129 docker push rajeshjallu/$JOB_NAME:latest' 
-           }
+           sh "docker login -u rajeshjallu -p Anki@1218"
+           sh 'ssh -o StrictHostKeyChecking=no -l ec2-user 3.110.174.129 docker push rajeshjallu/$JOB_NAME:latest'
         }
     }
 }
