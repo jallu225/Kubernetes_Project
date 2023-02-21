@@ -17,7 +17,6 @@ node {
     stage('Docker image tagging And Push') {
         sshagent(['docker-server']) {
            sh 'ssh -o StrictHostKeyChecking=no -l ec2-user 3.110.174.129 docker tag $JOB_NAME:v1.$BUILD_ID rajeshjallu/$JOB_NAME:latest'
-           sh "docker login -u rajeshjallu -p Anki@1218"
            sh 'ssh -o StrictHostKeyChecking=no -l ec2-user 3.110.174.129 docker push rajeshjallu/$JOB_NAME:latest'
         }
     }
